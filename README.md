@@ -79,7 +79,8 @@ Model lebih akurat mengenali pemesanan yang **tidak dibatalkan** dibanding yang 
 
 ```
 klasifikasi-hotel-booking-alfawaid/
-├── hotel booking demand.ipynb   # Notebook utama (kode + komentar)
+├── hotel booking demand.ipynb   # Notebook klasifikasi (Decision Tree)
+├── hotel_booking_regresi.ipynb  # Notebook regresi ADR
 ├── hotel_bookings.csv           # Dataset
 └── README.md                    # Dokumentasi proyek
 ```
@@ -108,6 +109,38 @@ Model Decision Tree mampu memprediksi pembatalan pemesanan hotel dengan akurasi 
 - membatasi kedalaman pohon (*hyperparameter tuning*) untuk mengurangi overfitting,
 - menambah fitur kategorikal seperti `deposit_type` dan `market_segment`,
 - mencoba algoritma lain seperti Random Forest.
+
+## 📉 Bagian 2: Regresi Tarif Harian (ADR)
+
+Selain klasifikasi pembatalan, proyek ini dilengkapi notebook regresi `hotel_booking_regresi.ipynb` untuk memprediksi **ADR (Average Daily Rate)**. Lima algoritma dibandingkan: Linear Regression, Ridge (L2), Lasso (L1), Random Forest, dan Gradient Boosting.
+
+**Langkah:** data dengan ADR ≤ 0 atau > 500 dibuang sebagai outlier, kategori diubah dengan One-Hot Encoding, data dibagi 80:20 (`random_state=42`), lalu model dievaluasi dengan MAE, MSE, RMSE, dan R².
+
+| Model | MAE | RMSE | R² uji | R² latih |
+|---|---|---|---|---|
+| Random Forest | 11,65 | 20,20 | 0,815 | 0,917 |
+| Gradient Boosting | 16,71 | 23,81 | 0,743 | 0,753 |
+| Linear Regression | 23,93 | 32,48 | 0,522 | 0,525 |
+| Ridge (L2) | 23,93 | 32,48 | 0,522 | 0,525 |
+| Lasso (L1) | 23,93 | 32,48 | 0,522 | 0,525 |
+
+**Kesimpulan singkat:** Random Forest terbaik. Model berbasis pohon jauh mengungguli model linear sehingga hubungan fitur dan ADR bersifat non-linear. Regularisasi Ridge/Lasso tidak memberi peningkatan pada data ini. Gradient Boosting masih dapat ditingkatkan dengan tuning hyperparameter.
+
+**Cara membaca metrik:** MAE, MSE, dan RMSE semakin kecil semakin baik (bergantung pada skala target, tidak harus di bawah 1). R² maksimal 1, semakin mendekati 1 semakin baik, dan bisa negatif jika model lebih buruk dari menebak rata-rata.
+
+## 📚 Referensi
+
+- Antonio, N., de Almeida, A., & Nunes, L. (2019). Hotel booking demand datasets. *Data in Brief, 22*, 41-49. https://doi.org/10.1016/j.dib.2018.11.126
+- Oliveira, F. B., et al. (2024). Machine learning and time series analysis to forecast hotel room prices. *BRACIS 2024*. https://sol.sbc.org.br/index.php/bracis/article/view/33638
+- Binesh, F., & Belarmino, A. M. (2024). Forecasting hotel room prices when entering turbulent times: A game-theoretic artificial neural network model. *Int. J. Contemporary Hospitality Management*. https://doi.org/10.1108/IJCHM-10-2022-1233
+- Quayesam, D. L. (2024). A comparison of machine learning algorithms for predicting sea surface temperature in the Great Barrier Reef region. arXiv:2411.15202.
+- Aljuboori, A. A. (2024). Enhancing accuracy in predicting continuous values through regression. *University of Bahrain Scientific Journals*.
+- Mao, M. (2024). A comparative study of random forest regression for predicting house prices using gradient boosting. *DAI 2023*, Atlantis Press. https://doi.org/10.2991/978-94-6463-370-2_63
+- Pedregosa, F., et al. (2011). Scikit-learn: Machine learning in Python. *JMLR, 12*, 2825-2830.
+
+## 🤖 Catatan Pengembangan
+
+Notebook regresi, kesimpulan, dan pembaruan dokumentasi ini disusun dengan bantuan Claude (Anthropic) dan diperbarui melalui GitHub.
 
 ## 👤 Penulis
 
